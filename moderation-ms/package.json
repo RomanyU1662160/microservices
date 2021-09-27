@@ -1,0 +1,25 @@
+{
+  "name": "moderation-ms",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/moderation-ms/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/moderation-ms/server.js",
+    "tsc": "tsc server.ts",
+    "dev": "nodemon start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.11",
+    "@types/node-fetch": "^2.5.9",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.1",
+    "nodemon": "^2.0.7",
+    "tsc-node": "0.0.3"
+  }
+}
