@@ -4,18 +4,18 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm  install 
+RUN npm i 
 
-COPY . .
+COPY . . 
 
-ENV PORT=5000
-ENV COMMON_DB_URL=http://localhost:30559
+ENV PORT=5006
 ENV POSTS_MS_URL=http://localhost:5000/api
 ENV COMMENTS_MS_URL=http://localhost:5001/api
 ENV QUERY_MS_URL=http://localhost:5002/api
 ENV MODERATION_MS_URL=http://localhost:5003/api
 ENV EVENT_BUS_MS_URL=http://localhost:5005/api
 
-EXPOSE 5000
+
+EXPOSE 5006
 
 CMD ["npm", "run","dev"]

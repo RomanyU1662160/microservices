@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: comments-depl
+  name: moderation-ms
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: comments
+      app: moderation
   template:
     metadata:
       labels:
-        app: comments
+        app: moderation
     spec:
       containers:
-        - name: comments
-          image: romanysefen/comments-ms:latest
+        - name: moderation
+          image: romanysefen/moderation-ms
           resources:
             limits:
               memory: '128Mi'

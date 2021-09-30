@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: comments-depl
+  name: eventbus-ms
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: comments
+      app: eventbus
   template:
     metadata:
       labels:
-        app: comments
+        app: eventbus
     spec:
       containers:
-        - name: comments
-          image: romanysefen/comments-ms:latest
+        - name: eventbus
+          image: romanysefen/eventbus-ms:latest
           resources:
             limits:
               memory: '128Mi'

@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: comments-depl
+  name: db-common-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: comments
+      app: db-common
   template:
     metadata:
       labels:
-        app: comments
+        app: db-common
     spec:
       containers:
-        - name: comments
-          image: romanysefen/comments-ms:latest
+        - name: db-common
+          image: romanysefen/common-db
           resources:
             limits:
               memory: '128Mi'

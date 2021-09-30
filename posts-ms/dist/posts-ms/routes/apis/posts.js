@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const mockData_1 = require("../../../Common/DB/mockData");
+// import { posts } from '../../../Common/DB/mockData';
 const node_fetch_1 = __importDefault(require("node-fetch"));
 const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)();
@@ -14,26 +14,52 @@ const comments_ms_url = process.env.COMMENTS_MS_URL; //5001
 const query_ms_url = process.env.QUERY_MS_URL; //5002
 const moderation_ms_url = process.env.MODERATION_MS_URL; //5003
 const event_bus_ms = process.env.EVENT_BUS_MS_URL; //5005
-router.get('/posts', (req, res) => {
-    console.log('posts :::->>>', mockData_1.posts);
-    res.status(200).send(mockData_1.posts);
+const common_db_url = process.env.COMMON_DB_URL; //7000
+let posts = [];
+const fetchPosts = async () => {
+    try {
+        const res = await (0, node_fetch_1.default)(`${common_db_url}/posts`);
+        const data = await res.json();
+        console.log('data from json-server:::->>>', data);
+        posts = data;
+    }
+    catch (error) {
+        console.log('error:::->>>', error);
+    }
+};
+router.get('/posts', async (req, res) => {
+    await fetchPosts();
+    console.log('posts from json server :::->>>', posts);
+    res.status(200).send(posts);
 });
 router.post('/posts', async (req, res, next) => {
     const { title } = req.body;
-    const newPost = { id: mockData_1.posts.length + 1, title, comments: [] };
-    mockData_1.posts.push(newPost);
-    await (0, node_fetch_1.default)(`${event_bus_ms}/events`, {
-        method: 'POST',
-        body: JSON.stringify({ type: 'postCreated', payload: newPost }),
-        headers: { 'Content-type': 'application/json; charset=UTF-8' },
-    });
-    res.send(mockData_1.posts).status(200);
-    next();
+    const newPost = { id: posts.length + 1, title, comments: [] };
+    try {
+        await (0, node_fetch_1.default)(`${common_db_url}/posts`, {
+            method: 'POST',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify(newPost),
+        });
+        // await fetch(`${event_bus_ms}/events`, {
+        //   method: 'POST',
+        //   body: JSON.stringify({ type: 'postCreated', payload: newPost }),
+        //   headers: { 'Content-type': 'application/json; charset=UTF-8' },
+        // });
+        await fetchPosts();
+        res.send(posts).status(200);
+        next();
+    }
+    catch (error) {
+        res.send(error);
+        console.log('error:::->>>', error);
+    }
 });
 router.post('/:postId/comments/new', async (req, res, next) => {
+    await fetchPosts();
     const { payload } = req.body;
     let postId = req.params.postId;
-    let foundedPost = mockData_1.posts.find((post) => post.id == +postId);
+    let foundedPost = posts.find((post) => post.id == +postId);
     if (foundedPost) {
         console.log('foundedPost:::->>>', foundedPost);
         foundedPost.comments.push(payload);
@@ -45,10 +71,11 @@ router.post('/:postId/comments/new', async (req, res, next) => {
         console.log('post not founded ');
     }
 });
-router.post('/:postId/comments/update/:commentId', (req, res, next) => {
+router.post('/:postId/comments/update/:commentId', async (req, res, next) => {
+    await fetchPosts();
     let { postId, commentId } = req.params;
     let { payload } = req.body;
-    let foundedPost = mockData_1.posts.find((post) => post.id == +postId);
+    let foundedPost = posts.find((post) => post.id == +postId);
     if (!foundedPost) {
         console.log('post not found');
         res.send('post not found');

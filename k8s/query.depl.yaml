@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: comments-depl
+  name: query-ms
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: comments
+      app: query
   template:
     metadata:
       labels:
-        app: comments
+        app: query
     spec:
       containers:
-        - name: comments
-          image: romanysefen/comments-ms:latest
+        - name: query
+          image: romanysefen/query-ms
           resources:
             limits:
               memory: '128Mi'

@@ -9,6 +9,7 @@ RUN npm i
 COPY . . 
 
 ENV PORT=5005
+ENV COMMON_DB_URL=http://localhost:7000
 ENV POSTS_MS_URL=http://localhost:5000/api
 ENV COMMENTS_MS_URL=http://localhost:5001/api
 ENV QUERY_MS_URL=http://localhost:5002/api
