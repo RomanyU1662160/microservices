@@ -1,10 +1,11 @@
+import { fetchPosts, IPost } from './../routes/apis/posts';
 import { RequestHandler } from 'express';
-import { posts } from '../../Common/DB/mockData';
 
-export const checkIfExist: RequestHandler = (req, res, next) => {
+let posts: Array<IPost> = [];
+export const checkIfExist: RequestHandler = async (req, res, next) => {
   const { title } = req.body;
-  console.log('title', title);
 
+  await fetchPosts();
   let filtered = posts.filter((P) => P.title === title);
   console.log('filtered:::->>>', filtered);
   if (filtered.length > 0) {

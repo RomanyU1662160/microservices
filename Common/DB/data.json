@@ -1,8 +1,15 @@
 {
   "posts": [
     {
+      "postId": 1,
       "title": "title of post 1",
-      "comments": [],
+      "comments": [
+        {
+          "content": "Some Content",
+          "status": "pending",
+          "postID": "1"
+        }
+      ],
       "id": 1
     },
     {
@@ -38,22 +45,22 @@
   ],
   "query-data": [
     {
-      "id": 1,
+      "postId": 1,
       "title": "title of post 1",
       "comments": []
     },
     {
-      "id": 2,
+      "postId": 2,
       "title": "title of post 2",
       "comments": []
     },
     {
-      "id": 3,
+      "postId": 3,
       "title": "title of post 3",
       "comments": []
     },
     {
-      "id": 4,
+      "postId": 4,
       "title": "title of post 4",
       "comments": []
     }

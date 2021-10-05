@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: moderation-ms
+  name: moderation-depl
 spec:
   replicas: 1
   selector:
@@ -19,3 +19,15 @@ spec:
             limits:
               memory: '128Mi'
               cpu: '500m'
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: moderation-ms
+spec:
+  selector:
+    app: moderation
+  ports:
+    - port: 5003
+      targetPort: 5003

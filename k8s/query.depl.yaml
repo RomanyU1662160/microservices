@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: query-ms
+  name: query-depl
 spec:
   replicas: 1
   selector:
@@ -19,3 +19,14 @@ spec:
             limits:
               memory: '128Mi'
               cpu: '500m'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: query-ms
+spec:
+  selector:
+    app: query
+  ports:
+    - port: 5002
+      targetPort: 5002

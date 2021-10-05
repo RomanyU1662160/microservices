@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: eventbus-ms
+  name: eventbus-depl
 spec:
   replicas: 1
   selector:
@@ -19,3 +19,14 @@ spec:
             limits:
               memory: '128Mi'
               cpu: '500m'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eventbus-ms
+spec:
+  selector:
+    app: eventbus
+  ports:
+    - port: 5005
+      targetPort: 5005

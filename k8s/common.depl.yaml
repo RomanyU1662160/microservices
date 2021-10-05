@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-common-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db-common
+  template:
+    metadata:
+      labels:
+        app: db-common
+    spec:
+      containers:
+        - name: db-common
+          image: romanysefen/common-db
+          resources:
+            limits:
+              memory: '128Mi'
+              cpu: '500m'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-svc
+spec:
+  selector:
+    app: db-common
+  ports:
+    - port: 5006
+      targetPort: 5006

@@ -1,11 +1,29 @@
 import express from 'express';
 import { checkIfExist } from '../../middlewares/checkifExist';
-// import { posts } from '../../../Common/DB/mockData';
 import fetch from 'node-fetch';
-import { IPost } from '../../../Common/interfaces';
+
 import { config } from 'dotenv';
 
 config();
+
+export interface IPost {
+  id: number;
+  title: string;
+  comments: Partial<IComment>[];
+}
+
+export enum Status {
+  APPROVED = 'approved',
+  PENDING = 'pending',
+  REJECTED = 'rejected',
+}
+
+export interface IComment {
+  id?: string | number;
+  postID: string;
+  content: string;
+  status: Status;
+}
 
 const router = express.Router();
 
@@ -14,10 +32,10 @@ const comments_ms_url = process.env.COMMENTS_MS_URL; //5001
 const query_ms_url = process.env.QUERY_MS_URL; //5002
 const moderation_ms_url = process.env.MODERATION_MS_URL; //5003
 const event_bus_ms = process.env.EVENT_BUS_MS_URL; //5005
-const common_db_url = process.env.COMMON_DB_URL; //7000
+const common_db_url = process.env.COMMON_DB_URL; //5006
 
 let posts: Array<IPost> = [];
-const fetchPosts = async () => {
+export const fetchPosts = async () => {
   try {
     const res = await fetch(`${common_db_url}/posts`);
     const data = await res.json();
@@ -44,11 +62,11 @@ router.post('/posts', async (req, res, next) => {
       body: JSON.stringify(newPost),
     });
 
-    // await fetch(`${event_bus_ms}/events`, {
-    //   method: 'POST',
-    //   body: JSON.stringify({ type: 'postCreated', payload: newPost }),
-    //   headers: { 'Content-type': 'application/json; charset=UTF-8' },
-    // });
+    await fetch(`${event_bus_ms}/events`, {
+      method: 'POST',
+      body: JSON.stringify({ type: 'postCreated', payload: newPost }),
+      headers: { 'Content-type': 'application/json; charset=UTF-8' },
+    });
 
     await fetchPosts();
     res.send(posts).status(200);
@@ -61,19 +79,32 @@ router.post('/posts', async (req, res, next) => {
 
 router.post('/:postId/comments/new', async (req, res, next) => {
   await fetchPosts();
-  const { payload } = req.body;
+  const { content, status } = req.body;
+  const newComment = { content, status };
+  console.log('payload:::->>>', newComment);
   let postId = req.params.postId;
 
   let foundedPost = posts.find((post) => post.id == +postId);
 
   if (foundedPost) {
     console.log('foundedPost:::->>>', foundedPost);
-    foundedPost.comments.push(payload);
-    console.log('post comments updated n post-ms ');
+    foundedPost.comments = [
+      ...foundedPost.comments,
+      { newComment } as Partial<IComment>,
+    ];
+
+    console.log('updatedComments:::->>>', foundedPost.comments);
+    await fetch(`${common_db_url}/posts/${foundedPost.id}`, {
+      method: 'PUT',
+      headers: { 'Content-type': 'application/json' },
+      body: JSON.stringify(foundedPost),
+    });
     res.send(foundedPost);
     next();
   } else {
     console.log('post not founded ');
+    res.send('Post not found ');
+    next();
   }
 });
 
@@ -88,17 +119,14 @@ router.post('/:postId/comments/update/:commentId', async (req, res, next) => {
     res.send('post not found');
     next();
   } else {
-    foundedPost.comments.map((comment) => {
+    foundedPost.comments.map((comment: Partial<IComment>) => {
       if (comment.id == +commentId) {
-        console.log('comment.id equal commentID');
         comment.status = payload.status;
-
         return comment;
       } else {
         console.log('comment not found ');
       }
     });
-
     res.send(foundedPost);
   }
 });

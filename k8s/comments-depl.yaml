@@ -19,3 +19,14 @@ spec:
             limits:
               memory: '128Mi'
               cpu: '500m'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: comments-ms
+spec:
+  selector:
+    app: comments
+  ports:
+    - port: 5001
+      targetPort: 5001
