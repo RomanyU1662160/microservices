@@ -1,7 +1,5 @@
 import express from 'express';
 import { config } from 'dotenv';
-import { IPost, IQuery } from '../../interfaces/interfaces';
-import { stringify } from '../../../moderation-ms/node_modules/@types/qs';
 import fetch from 'node-fetch';
 
 config();
