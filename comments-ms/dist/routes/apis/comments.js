@@ -21,7 +21,6 @@ const fetchPosts = async () => {
     try {
         const res = await (0, node_fetch_1.default)(`${common_db_url}/posts`);
         const data = await res.json();
-        console.log('data from json-server:::->>>', data);
         posts = data;
         return posts;
     }

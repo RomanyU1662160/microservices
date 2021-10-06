@@ -90,7 +90,7 @@ router.post('/:postId/comments/new', async (req, res, next) => {
     console.log('foundedPost:::->>>', foundedPost);
     foundedPost.comments = [
       ...foundedPost.comments,
-      { newComment } as Partial<IComment>,
+      newComment as Partial<IComment>,
     ];
 
     console.log('updatedComments:::->>>', foundedPost.comments);
@@ -126,6 +126,12 @@ router.post('/:postId/comments/update/:commentId', async (req, res, next) => {
       } else {
         console.log('comment not found ');
       }
+    });
+
+    await fetch(`${common_db_url}/posts/${foundedPost.id}`, {
+      method: 'PUT',
+      headers: { 'Content-type': 'application/json' },
+      body: JSON.stringify(foundedPost),
     });
     res.send(foundedPost);
   }

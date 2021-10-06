@@ -2,10 +2,10 @@
   "name": "moderation-ms",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/server.js",
+  "main": "dist/moderation-ms/server.js",
   "scripts": {
     "build": "tsc",
-    "start": "node  dist/server.js",
+    "start": "node  dist/moderation-ms/server.js",
     "tsc": "tsc server.ts",
     "dev": "tsc && nodemon start"
   },

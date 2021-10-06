@@ -73,7 +73,7 @@ router.post('/:postId/comments/new', async (req, res, next) => {
         console.log('foundedPost:::->>>', foundedPost);
         foundedPost.comments = [
             ...foundedPost.comments,
-            { newComment },
+            newComment,
         ];
         console.log('updatedComments:::->>>', foundedPost.comments);
         await node_fetch_1.default(`${common_db_url}/posts/${foundedPost.id}`, {
@@ -86,6 +86,8 @@ router.post('/:postId/comments/new', async (req, res, next) => {
     }
     else {
         console.log('post not founded ');
+        res.send('Post not found ');
+        next();
     }
 });
 router.post('/:postId/comments/update/:commentId', async (req, res, next) => {
