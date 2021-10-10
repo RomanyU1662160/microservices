@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import { PostsContext } from '../../contexts/postsContext';
 import { IPost } from '../../interfaces/interfaces';
 import CommentItem from '../comments/CommentItem';
+import CommentsPage from '../pages/commentsPage';
 import PostItem from './PostItem';
 
 const PostsList = () => {
@@ -28,11 +29,9 @@ const PostsList = () => {
           </div>
         </div>
         <div className="col-md-4 bg-light">
-          Comments
-          {activePost &&
-            activePost.comments.map((comment) => (
-              <CommentItem comment={comment} key={comment.id} />
-            ))}
+          {activePost && activePost.comments && (
+            <CommentsPage comments={activePost.comments} />
+          )}
         </div>
       </div>
     </>

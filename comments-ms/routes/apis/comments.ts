@@ -53,7 +53,7 @@ router.post('/comments/:postId', async (req, res, next) => {
     console.log('foundedPost:::->>>', foundedPost);
     foundedPost.comments = [
       ...foundedPost.comments,
-      { newComment } as Partial<IComment>,
+      newComment as Partial<IComment>,
     ];
 
     await fetch(`${common_db_url}/posts/${foundedPost.id}`, {
