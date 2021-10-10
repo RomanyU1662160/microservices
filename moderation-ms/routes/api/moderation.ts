@@ -1,6 +1,6 @@
 import express from 'express';
 import { config } from 'dotenv';
-import { IComment, IPost, Status } from '../../../Common/interfaces';
+import { IComment, IPost, Status } from '../../interfaces/interfaces';
 import fetch from 'node-fetch';
 
 config();
