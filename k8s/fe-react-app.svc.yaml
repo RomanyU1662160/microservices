@@ -1,0 +1,14 @@
+# https://kubernetes.io/docs/concepts/services-networking/service/
+apiVersion: v1
+kind: Service
+metadata:
+  name: fe-react-svc
+spec:
+  type: NodePort
+  selector:
+    app: fe-react
+  ports:
+  - name: fe-react
+    protocol: TCP
+    port: 3000
+    targetPort: 3000

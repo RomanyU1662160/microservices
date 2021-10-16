@@ -1,0 +1,37 @@
+
+# https://kubernetes.io/docs/concepts/services-networking/ingress/
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-svc
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+
+spec:
+  rules:
+  - host: romany-app.com
+    http:
+      paths:
+      - path: /api/posts
+        pathType: Prefix
+        backend:
+          service:
+            name: posts-ms  # name of cluster-svc
+            port:
+              number: 5000
+      - path: /api/comments
+        pathType: Prefix
+        backend:
+          service:
+            name: comments-ms # name of cluster-svc in depl 
+            port:
+              number: 5001
+      - path: /?(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: fe-react-ms # name of cluster-svc in depl
+            port:
+              number: 3000
+

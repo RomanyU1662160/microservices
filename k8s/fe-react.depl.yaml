@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fe-react-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fe-react
+  template:
+    metadata:
+      labels:
+        app: fe-react
+    spec:
+      containers:
+        - name: fe-react
+          image: romanysefen/fe-react:latest
+          resources:
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fe-react-ms
+spec:
+  selector:
+    app: fe-react
+  ports:
+    - port: 3000
+      targetPort: 3000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fe-react-svc
+spec:
+  type: NodePort
+  selector:
+    app: fe-react
+  ports:
+  - name: fe-react
+    protocol: TCP
+    port: 3000
+    targetPort: 3000
+

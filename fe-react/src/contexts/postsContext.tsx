@@ -6,7 +6,8 @@ config();
 
 export const PostsContext = createContext<IPost[]>([]);
 
-const postsURL = 'http://localhost:32309/api/posts';
+// const postsURL = 'http://romany-app.com/api/posts';
+const postsURL =  process.env.REACT_APP_POSTS_MS_URL  ;
 console.log(`postsURL`, postsURL);
 
 interface Props {
