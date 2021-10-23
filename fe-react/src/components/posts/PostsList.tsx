@@ -1,7 +1,6 @@
 import { useContext, useState } from 'react';
 import { PostsContext } from '../../contexts/postsContext';
 import { IPost } from '../../interfaces/interfaces';
-import CommentItem from '../comments/CommentItem';
 import CommentsPage from '../pages/commentsPage';
 import PostItem from './PostItem';
 

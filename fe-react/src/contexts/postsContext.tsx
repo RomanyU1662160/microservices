@@ -8,14 +8,21 @@ export const PostsContext = createContext<IPost[]>([]);
 
 // const postsURL = 'http://romany-app.com/api/posts';
 const postsURL =  process.env.REACT_APP_POSTS_MS_URL  ;
-console.log(`postsURL`, postsURL);
+console.log(`postsURL:::>>>>`, postsURL);
 
 interface Props {
   children: ReactNode;
 }
 
 const PostsProvider = ({ children }: Props) => {
-  const [posts, setPosts] = useState<IPost[]>([]);
+  const examplePost:IPost = {  title:"Test", "comments": [
+    {
+      "content": "Some Content",
+      "status": undefined,
+      "postID": "1"
+    }
+  ],id:0} 
+  const [posts, setPosts] = useState<IPost[]>([examplePost]);
   const [isLoading, setIsLoading] = useState<Boolean>(false);
   const [isError, setIsError] = useState<Error>();
   const [hasError, setHasError] = useState<Boolean>(false);
@@ -35,6 +42,8 @@ const PostsProvider = ({ children }: Props) => {
       }
     } else {
       console.log('post url is not defined.');
+      setHasError(true)
+      setIsError(new Error("post url is not defined."))
     }
   };
 
