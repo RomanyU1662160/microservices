@@ -110,6 +110,11 @@ router.post('/:postId/comments/update/:commentId', async (req, res, next) => {
                 console.log('comment not found ');
             }
         });
+        await node_fetch_1.default(`${common_db_url}/posts/${foundedPost.id}`, {
+            method: 'PUT',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify(foundedPost),
+        });
         res.send(foundedPost);
     }
 });

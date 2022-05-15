@@ -39,7 +39,7 @@ router.post('/newPost', async (req, res, next) => {
   next();
 });
 
-router.post('/newComment/:postId', async (req, res, next) => {
+router.post('/comment/:postId/create', async (req, res, next) => {
   await fetchQueryData();
   console.log('queryData:::->>>', queryData);
   let { type, payload } = req.body;

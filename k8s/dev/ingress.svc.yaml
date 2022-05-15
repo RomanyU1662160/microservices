@@ -27,6 +27,41 @@ spec:
             name: comments-ms # name of cluster-svc in depl 
             port:
               number: 5001
+      - path: /query-data
+        pathType: Prefix
+        backend:
+          service: 
+            name: db-svc
+            port: 
+              number: 5006  
+      - path: /api/comment/moderate
+        pathType: Prefix
+        backend:
+          service: 
+            name: moderation-ms
+            port: 
+              number: 5003    
+      - path: /api/events
+        pathType: Prefix
+        backend:
+          service: 
+            name: eventbus-ms
+            port: 
+              number: 5005   
+      - path: /api/events/create
+        pathType: Prefix
+        backend:
+          service: 
+            name: eventbus-ms
+            port: 
+              number: 5005    
+      - path: /api/comment/{postid}/create
+        pathType: Prefix
+        backend:
+          service: 
+            name: query-ms
+            port: 
+              number: 5005    
       - path: /?(.*)
         pathType: Prefix
         backend:

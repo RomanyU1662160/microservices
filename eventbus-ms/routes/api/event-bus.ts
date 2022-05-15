@@ -14,7 +14,7 @@ const router = express.Router();
 
 const events: Array<object> = [];
 
-router.post('/events', async (req, res, next) => {
+router.post('/events/create', async (req, res, next) => {
   let { type, payload } = req.body;
 
   events.push({ type, payload });
@@ -50,7 +50,7 @@ router.post('/events', async (req, res, next) => {
           payload,
         }),
       });
-      await fetch(`${moderation_ms_url}/newComment`, {
+      await fetch(`${moderation_ms_url}/comment/moderate`, {
         method: 'POST',
         headers: { 'Content-type': 'application/json; charset=UTF-8' },
         body: JSON.stringify({ type: 'commentCreated', payload }),

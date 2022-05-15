@@ -20,7 +20,7 @@ function filterResult(target: any, rule: string) {
 
 const router = express.Router();
 
-router.post('/newComment', async (req, res, next) => {
+router.post('/comment/moderate', async (req, res, next) => {
   let { payload } = req.body;
   console.log('payload in moderation :::->>>', payload);
   console.log('moderation/newComment endpoint called   ');

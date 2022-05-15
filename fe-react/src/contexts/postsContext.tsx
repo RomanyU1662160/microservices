@@ -15,7 +15,7 @@ interface Props {
 }
 
 const PostsProvider = ({ children }: Props) => {
-  const examplePost:IPost = {  title:"Test", "comments": [
+  const examplePost:IPost = {  title:"Test-number 2", "comments": [
     {
       "content": "Some Content",
       "status": undefined,
